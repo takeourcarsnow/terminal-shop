@@ -11,6 +11,7 @@ import { Order } from '@/types';
 import { formatPrice, formatDateTime } from '@/lib/utils';
 import {
   Table,
+  TableHead,
   TableHeader,
   TableBody,
   TableRow,
@@ -33,7 +34,7 @@ export function RecentOrders({ orders }: RecentOrdersProps) {
       </div>
 
       <Table>
-        <TableHeader>
+        <TableHead>
           <TableRow>
             <TableCell header>Order ID</TableCell>
             <TableCell header>Customer</TableCell>
@@ -42,7 +43,7 @@ export function RecentOrders({ orders }: RecentOrdersProps) {
             <TableCell header>Date</TableCell>
             <TableCell header>Actions</TableCell>
           </TableRow>
-        </TableHeader>
+        </TableHead>
         <TableBody>
           {orders.length === 0 ? (
             <TableEmpty message="No orders found" colSpan={6} />

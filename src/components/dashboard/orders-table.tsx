@@ -11,6 +11,7 @@ import { Order, OrderStatus } from '@/types';
 import { formatPrice, formatDateTime } from '@/lib/utils';
 import {
   Table,
+  TableHead,
   TableHeader,
   TableBody,
   TableRow,
@@ -85,7 +86,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
       {/* Table */}
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader>
+          <TableHead>
             <TableRow>
               <TableCell header>Order ID</TableCell>
               <TableCell header>Customer</TableCell>
@@ -95,7 +96,7 @@ export function OrdersTable({ orders }: OrdersTableProps) {
               <TableCell header>Date</TableCell>
               <TableCell header>Actions</TableCell>
             </TableRow>
-          </TableHeader>
+          </TableHead>
           <TableBody>
             {filteredOrders.length === 0 ? (
               <TableEmpty message="No orders found" colSpan={7} />

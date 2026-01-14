@@ -11,6 +11,7 @@ import { Product } from '@/types';
 import { formatPrice, truncate } from '@/lib/utils';
 import {
   Table,
+  TableHead,
   TableHeader,
   TableBody,
   TableRow,
@@ -84,7 +85,7 @@ export function ProductTable({ products }: ProductTableProps) {
         {/* Table */}
         <div className="overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHead>
               <TableRow>
                 <TableCell header>Product</TableCell>
                 <TableCell header>Category</TableCell>
@@ -93,7 +94,7 @@ export function ProductTable({ products }: ProductTableProps) {
                 <TableCell header>Status</TableCell>
                 <TableCell header>Actions</TableCell>
               </TableRow>
-            </TableHeader>
+            </TableHead>
             <TableBody>
               {filteredProducts.length === 0 ? (
                 <TableEmpty message="No products found" colSpan={6} />
