@@ -4,15 +4,16 @@
 
 'use client';
 
-import React, { useState, useMemo, Suspense } from 'react';
+import React, { useState, useMemo, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { products } from '@/data/products';
 import { ProductGrid, ProductFilters } from '@/components/products';
-import { TerminalWindow, AsciiLoader } from '@/components/ui';
+import { TerminalWindow, ProductGridSkeleton } from '@/components/ui';
 
 function ProductsContent() {
   const searchParams = useSearchParams();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const category = searchParams.get('category');
   const sort = searchParams.get('sort') || 'newest';
@@ -20,6 +21,9 @@ function ProductsContent() {
   const featured = searchParams.get('featured');
 
   const filteredProducts = useMemo(() => {
+    // Simulate loading delay for demo
+    setIsLoading(true);
+
     let result = [...products];
 
     // Filter by search
@@ -65,6 +69,9 @@ function ProductsContent() {
         );
     }
 
+    // Simulate async operation
+    setTimeout(() => setIsLoading(false), 300);
+
     return result;
   }, [category, sort, search, featured]);
 
@@ -82,7 +89,7 @@ function ProductsContent() {
             {category ? `/${category}` : 'All Products'}
           </h1>
           <p className="text-terminal-muted font-mono text-sm mt-1">
-            {filteredProducts.length} items found
+            {isLoading ? 'Loading...' : `${filteredProducts.length} items found`}
           </p>
         </div>
 
@@ -100,7 +107,11 @@ function ProductsContent() {
 
           {/* Product Grid */}
           <div>
-            <ProductGrid products={filteredProducts} columns={3} />
+            {isLoading ? (
+              <ProductGridSkeleton count={6} />
+            ) : (
+              <ProductGrid products={filteredProducts} columns={3} />
+            )}
           </div>
         </div>
       </div>
@@ -114,7 +125,34 @@ export default function ProductsPage() {
       fallback={
         <div className="min-h-screen py-8">
           <div className="container mx-auto px-4">
-            <AsciiLoader />
+            <div className="mb-8">
+              <div className="font-mono text-sm text-terminal-muted mb-2">
+                <span className="text-terminal-green">$</span> ls products/
+              </div>
+              <h1 className="text-2xl md:text-3xl font-mono text-terminal-text">
+                All Products
+              </h1>
+              <p className="text-terminal-muted font-mono text-sm mt-1">
+                Loading...
+              </p>
+            </div>
+            <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+              <aside>
+                <div className="bg-terminal-header border border-terminal-border rounded-lg p-4">
+                  <div className="animate-pulse space-y-4">
+                    <div className="h-4 bg-terminal-border rounded w-3/4"></div>
+                    <div className="space-y-2">
+                      <div className="h-3 bg-terminal-border rounded"></div>
+                      <div className="h-3 bg-terminal-border rounded w-5/6"></div>
+                      <div className="h-3 bg-terminal-border rounded w-4/6"></div>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+              <div>
+                <ProductGridSkeleton count={6} />
+              </div>
+            </div>
           </div>
         </div>
       }

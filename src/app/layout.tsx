@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+import { SkipLink } from '@/components/ui';
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -32,6 +33,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${jetbrainsMono.variable} font-mono antialiased`}>
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <SkipLink href="#navigation">Skip to navigation</SkipLink>
         <Providers>{children}</Providers>
       </body>
     </html>

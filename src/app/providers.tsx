@@ -22,7 +22,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ToastProvider>
       <div className="min-h-screen flex flex-col bg-terminal-bg text-terminal-text">
         <Header />
-        <main className="flex-1">
+        <main id="main-content" className="flex-1">
           {children}
         </main>
         <Footer />

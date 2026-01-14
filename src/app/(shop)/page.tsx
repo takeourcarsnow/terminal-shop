@@ -14,7 +14,7 @@ export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
 
   return (
-    <div className="min-h-screen">
+    <div suppressHydrationWarning={true} className="min-h-screen">
       {/* Hero Section */}
       <section className="py-12 md:py-20 border-b border-terminal-border">
         <div className="container mx-auto px-4">

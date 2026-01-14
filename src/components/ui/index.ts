@@ -11,3 +11,7 @@ export * from './ascii-art';
 export * from './table';
 export * from './card';
 export * from './toast';
+export * from './skeleton';
+export * from './error-boundary';
+export * from './progress';
+export * from './accessibility';

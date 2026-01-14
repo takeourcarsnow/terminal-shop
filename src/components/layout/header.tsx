@@ -38,7 +38,7 @@ export function Header() {
   const cartCount = getTotalItems();
 
   return (
-    <header className="sticky top-0 z-40 bg-terminal-bg/95 backdrop-blur border-b border-terminal-border">
+    <header suppressHydrationWarning={true} className="sticky top-0 z-40 bg-terminal-bg/95 backdrop-blur border-b border-terminal-border">
       {/* Top Bar - ASCII decoration */}
       <div className="hidden md:block text-terminal-muted text-xs font-mono text-center py-1 border-b border-terminal-border/50 bg-terminal-header">
         ═══════════════════════════════════════ TERMINAL.SHOP v2.0.26 ═══════════════════════════════════════
@@ -58,7 +58,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav id="navigation" className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.href}

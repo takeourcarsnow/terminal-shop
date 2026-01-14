@@ -11,7 +11,7 @@ import { ShoppingCart, Eye } from 'lucide-react';
 import { Product } from '@/types';
 import { formatPrice, cn, truncate } from '@/lib/utils';
 import { useCartStore } from '@/store';
-import { Button, Badge, StockBadge, AsciiArt } from '@/components/ui';
+import { Button, Badge, StockBadge, AsciiArt, useToast } from '@/components/ui';
 
 interface ProductCardProps {
   product: Product;
@@ -20,11 +20,16 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addItem, openCart } = useCartStore();
+  const { showToast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addItem(product);
+    
+    // Show success toast
+    showToast(`${product.name} added to cart!`, 'success');
+    
     openCart();
   };
 
@@ -34,6 +39,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 
   return (
     <motion.div
+      suppressHydrationWarning={true}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
@@ -132,6 +138,12 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
 // Compact variant for sidebars
 export function ProductCardCompact({ product }: { product: Product }) {
   const { addItem } = useCartStore();
+  const { showToast } = useToast();
+
+  const handleAddToCart = () => {
+    addItem(product);
+    showToast(`${product.name} added to cart!`, 'success');
+  };
 
   return (
     <div className="flex gap-3 p-3 border border-terminal-border rounded-lg hover:border-terminal-green transition-colors">
@@ -148,7 +160,7 @@ export function ProductCardCompact({ product }: { product: Product }) {
           {formatPrice(product.price)}
         </p>
         <button
-          onClick={() => addItem(product)}
+          onClick={handleAddToCart}
           className="text-xs font-mono text-terminal-cyan hover:text-terminal-green transition-colors"
         >
           + Add to cart

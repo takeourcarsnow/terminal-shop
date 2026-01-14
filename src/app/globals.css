@@ -198,3 +198,35 @@ input, textarea, select, button {
     padding-right: 1rem;
   }
 }
+
+/* High Contrast Mode */
+.high-contrast {
+  --color-terminal-bg: #000000;
+  --color-terminal-header: #000000;
+  --color-terminal-border: #ffffff;
+  --color-terminal-text: #ffffff;
+  --color-terminal-muted: #cccccc;
+  --color-terminal-green: #00ff00;
+  --color-terminal-cyan: #00ffff;
+  --color-terminal-yellow: #ffff00;
+  --color-terminal-red: #ff0000;
+  --color-terminal-magenta: #ff00ff;
+  --color-terminal-blue: #0000ff;
+}
+
+/* Focus Styles for Better Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-terminal-green);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
