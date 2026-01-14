@@ -1,26 +1,200 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TERMINAL SHOP - GLOBAL STYLES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Terminal Color Palette - Dark Theme */
+  --color-terminal-bg: #0d1117;
+  --color-terminal-header: #161b22;
+  --color-terminal-border: #30363d;
+  --color-terminal-text: #e6edf3;
+  --color-terminal-muted: #7d8590;
+  
+  /* Terminal Colors */
+  --color-terminal-green: #3fb950;
+  --color-terminal-cyan: #58a6ff;
+  --color-terminal-yellow: #d29922;
+  --color-terminal-red: #f85149;
+  --color-terminal-magenta: #bc8cff;
+  --color-terminal-blue: #58a6ff;
+  
+  /* Animations */
+  --animate-terminal-blink: terminal-blink 1s step-end infinite;
+  --animate-scanline: scanline 8s linear infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Light Theme Overrides */
+.light {
+  --color-terminal-bg: #ffffff;
+  --color-terminal-header: #f6f8fa;
+  --color-terminal-border: #d0d7de;
+  --color-terminal-text: #1f2328;
+  --color-terminal-muted: #656d76;
+  --color-terminal-green: #1a7f37;
+  --color-terminal-cyan: #0969da;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  background-color: var(--color-terminal-bg);
+  color: var(--color-terminal-text);
+  line-height: 1.6;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-terminal-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-terminal-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-terminal-muted);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-terminal-green);
+  color: var(--color-terminal-bg);
+}
+
+/* Terminal Text Effects */
+.terminal-glow {
+  text-shadow: 0 0 5px var(--color-terminal-green);
+}
+
+.terminal-scanline {
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-scanline::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(59, 185, 80, 0.1),
+    transparent
+  );
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+}
+
+/* Code Blocks */
+pre, code {
+  font-family: inherit;
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--color-terminal-green);
+  outline-offset: 2px;
+}
+
+/* Form Elements */
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+/* Line clamp */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Gradient Backgrounds */
+.gradient-terminal {
+  background: linear-gradient(
+    135deg,
+    var(--color-terminal-bg) 0%,
+    var(--color-terminal-header) 100%
+  );
+}
+
+/* ASCII Art Styling */
+.ascii-art {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  white-space: pre;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* CRT Effect (optional) */
+.crt-effect {
+  animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+  0% { opacity: 0.97; }
+  50% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
