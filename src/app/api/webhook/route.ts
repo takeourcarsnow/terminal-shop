@@ -6,12 +6,6 @@ import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-15.clover',
-});
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
-
 export async function POST(request: Request) {
   try {
     const body = await request.text();
@@ -24,6 +18,19 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const stripeSecret = process.env.STRIPE_SECRET_KEY;
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+    if (!stripeSecret || !webhookSecret) {
+      console.warn('Stripe webhook not configured; missing STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET');
+      return NextResponse.json(
+        { error: 'Stripe webhook not configured' },
+        { status: 501 }
+      );
+    }
+
+    const stripe = new Stripe(stripeSecret, { apiVersion: '2025-12-15.clover' });
 
     let event: Stripe.Event;
 

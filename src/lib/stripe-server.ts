@@ -4,18 +4,26 @@
 
 import Stripe from 'stripe';
 
-// Create Stripe instance for server-side operations
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-15.clover',
-  typescript: true,
-});
+export function getStripe() {
+  const secret = process.env.STRIPE_SECRET_KEY;
+  if (!secret) return null;
+  return new Stripe(secret, {
+    apiVersion: '2025-12-15.clover',
+    typescript: true,
+  });
+}
 
 // Helper to create payment intent
 export async function createPaymentIntent(
   amount: number,
   metadata?: Stripe.MetadataParam
 ) {
-  return stripe.paymentIntents.create({
+  const s = getStripe();
+  if (!s) {
+    throw new Error('Stripe is not configured (missing STRIPE_SECRET_KEY)');
+  }
+
+  return s.paymentIntents.create({
     amount,
     currency: 'usd',
     automatic_payment_methods: {
@@ -27,7 +35,11 @@ export async function createPaymentIntent(
 
 // Helper to retrieve payment intent
 export async function retrievePaymentIntent(paymentIntentId: string) {
-  return stripe.paymentIntents.retrieve(paymentIntentId);
+  const s = getStripe();
+  if (!s) {
+    throw new Error('Stripe is not configured (missing STRIPE_SECRET_KEY)');
+  }
+  return s.paymentIntents.retrieve(paymentIntentId);
 }
 
 // Helper to create checkout session
@@ -37,7 +49,12 @@ export async function createCheckoutSession(
   cancelUrl: string,
   metadata?: Stripe.MetadataParam
 ) {
-  return stripe.checkout.sessions.create({
+  const s = getStripe();
+  if (!s) {
+    throw new Error('Stripe is not configured (missing STRIPE_SECRET_KEY)');
+  }
+
+  return s.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
